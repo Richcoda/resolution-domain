@@ -2,14 +2,18 @@
     "version": 2,
     "builds": [
       {
-        "src": "api/**/*.js",
+        "src": "api/resolve.js",
         "use": "@vercel/node"
       }
     ],
     "routes": [
       {
-        "src": "/api/(.*)",
-        "dest": "/api/$1"
+        "src": "/(.*)",
+        "dest": "/api/resolve",
+        "methods": ["GET"]
       }
-    ]
+    ],
+    "env": {
+      "NODE_ENV": "production"
+    }
   }
