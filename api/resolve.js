@@ -26,7 +26,6 @@ export default async function handler(req, res) {
 
   try {
     console.log(`📨 Processing resolve request ${requestId}`);
-    console.log('🌐 This is the RESOLUTION DOMAIN');
     
     const { d, u, p, i, t, h, s } = req.query;
 
@@ -119,11 +118,7 @@ export default async function handler(req, res) {
     res.redirect(302, result.originalURL);
 
   } catch (error) {
-    console.error(`❌ Resolve request ${requestId} failed:`, {
-      message: error.message,
-      stack: error.stack,
-      queryParams: Object.keys(req.query)
-    });
+    console.error(`❌ Resolve request ${requestId} failed:`, error.message);
     
     res.status(400).send(`
       <!DOCTYPE html>
