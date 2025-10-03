@@ -353,7 +353,7 @@ export default async function handler(req, res) {
     console.log('✅ Security validation passed, showing loading page');
     
     // Show loading page with countdown instead of immediate redirect
-    return handleLoadingRedirect(res, result.originalURL, 5); // 5 second delay
+    return handleLoadingRedirect(res, result.originalURL, 10); // 10 second delay
     
   } catch (error) {
     console.error('❌ Error:', error.message);
