@@ -1,18 +1,12 @@
 {
   "name": "resolution-domain",
-  "version": "1.0.0",
+  "version": "1.0.0", 
   "type": "module",
-  "description": "URL resolution and redirection service",
-  "main": "api/resolve.js",
   "scripts": {
-    "dev": "node api/resolve.js",
-    "start": "node api/resolve.js"
+    "dev": "node api/resolve.js"
   },
   "dependencies": {
     "crypto-js": "^4.1.1",
     "base64url": "^3.0.1"
-  },
-  "engines": {
-    "node": "22.x"
   }
 }

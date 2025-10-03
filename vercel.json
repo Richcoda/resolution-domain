@@ -8,12 +8,12 @@
     ],
     "routes": [
       {
+        "src": "/api/resolve",
+        "dest": "/api/resolve.js"
+      },
+      {
         "src": "/(.*)",
-        "dest": "/api/resolve",
-        "methods": ["GET"]
+        "dest": "/api/resolve.js"
       }
-    ],
-    "env": {
-      "NODE_ENV": "production"
-    }
+    ]
   }
