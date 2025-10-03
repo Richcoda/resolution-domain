@@ -1,0 +1,14 @@
+{
+  "name": "url-resolver",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "base64url": "^3.0.1",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^17.2.3",
+    "uuid": "^9.0.0"
+  },
+  "scripts": {
+    "dev": "node server.js"
+  }
+}
