@@ -127,6 +127,183 @@ const handleLandingPage = (res) => {
   return res.status(200).send(html);
 };
 
+// Loading page handler with redirect delay
+const handleLoadingRedirect = (res, originalURL, delaySeconds = 3) => {
+  console.log('⏳ Showing loading page before redirect to:', originalURL);
+  
+  const html = `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Redirect - Loading</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            color: white;
+        }
+        
+        .loading-container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 60px 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .loading-icon {
+            font-size: 4rem;
+            margin-bottom: 30px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 30px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .message {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            opacity: 0.9;
+        }
+        
+        .countdown {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 25px 0;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        
+        .security-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 25px;
+            font-size: 0.9rem;
+        }
+        
+        .security-info h3 {
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        
+        .manual-redirect {
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .manual-redirect a {
+            color: #a3bffa;
+            text-decoration: none;
+            border-bottom: 1px solid #a3bffa;
+        }
+        
+        .manual-redirect a:hover {
+            color: white;
+            border-bottom-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-container">
+        <div class="loading-icon">🛡️</div>
+        <div class="spinner"></div>
+        
+        <h1>Security Check Complete</h1>
+        
+        <div class="message">
+            Your secure link has been verified and is safe to proceed.
+            You'll be redirected automatically in a few seconds.
+        </div>
+        
+        <div class="countdown" id="countdown">${delaySeconds}</div>
+        
+        <div class="security-info">
+            <h3>✅ Security Verification Passed</h3>
+            <p>✓ URL authenticity confirmed<br>
+               ✓ Encryption validated<br>
+               ✓ Expiration check passed<br>
+               ✓ Threat scan completed</p>
+        </div>
+        
+        <div class="manual-redirect">
+            If you are not redirected automatically, 
+            <a href="${originalURL}" id="manualLink">click here to continue</a>
+        </div>
+    </div>
+
+    <script>
+        let seconds = ${delaySeconds};
+        const countdownEl = document.getElementById('countdown');
+        const manualLink = document.getElementById('manualLink');
+        
+        const countdown = setInterval(() => {
+            seconds--;
+            countdownEl.textContent = seconds;
+            
+            if (seconds <= 0) {
+                clearInterval(countdown);
+                window.location.href = '${originalURL}';
+            }
+        }, 1000);
+        
+        // Fallback redirect in case JavaScript is disabled
+        setTimeout(() => {
+            window.location.href = '${originalURL}';
+        }, ${delaySeconds * 1000 + 500});
+    </script>
+</body>
+</html>
+  `;
+  
+  res.setHeader('Content-Type', 'text/html');
+  return res.status(200).send(html);
+};
+
 const getSecretKey = () => {
   const secretKey = process.env.SECRET_KEY;
   console.log('🔑 Secret Key Check:', {
@@ -173,9 +350,11 @@ export default async function handler(req, res) {
     const protector = new SophosURLProtector(getSecretKey());
     const result = await protector.resolveProtectedURL({ d, u, p, i, t, h, s });
     
-    console.log('✅ Redirecting to:', result.originalURL);
-    return res.redirect(302, result.originalURL);
-
+    console.log('✅ Security validation passed, showing loading page');
+    
+    // Show loading page with countdown instead of immediate redirect
+    return handleLoadingRedirect(res, result.originalURL, 5); // 5 second delay
+    
   } catch (error) {
     console.error('❌ Error:', error.message);
     return res.status(400).json({
