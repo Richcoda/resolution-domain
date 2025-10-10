@@ -13,7 +13,9 @@ const handleLandingPage = (res) => {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secure URL Resolution Service</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔒</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23667eea'/><text x='50' y='70' font-family='Arial' font-size='60' text-anchor='middle' fill='white'>🛡️</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23667eea'/><text x='50' y='70' font-family='Arial' font-size='60' text-anchor='middle' fill='white'>🛡️</text></svg>">
+    <meta name="theme-color" content="#667eea">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -129,7 +131,7 @@ const handleLandingPage = (res) => {
 };
 
 // Loading page handler with redirect delay
-const handleLoadingRedirect = (res, originalURL, delaySeconds = 3) => {
+const handleLoadingRedirect = (res, originalURL, delaySeconds = 5) => {
   console.log('⏳ Showing loading page before redirect to:', originalURL);
   
   const html = `
@@ -139,7 +141,9 @@ const handleLoadingRedirect = (res, originalURL, delaySeconds = 3) => {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Secure Redirect - Loading</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔒</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23667eea'/><text x='50' y='70' font-family='Arial' font-size='60' text-anchor='middle' fill='white'>🛡️</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23667eea'/><text x='50' y='70' font-family='Arial' font-size='60' text-anchor='middle' fill='white'>🛡️</text></svg>">
+    <meta name="theme-color" content="#667eea">
     <style>
         * {
             margin: 0;
